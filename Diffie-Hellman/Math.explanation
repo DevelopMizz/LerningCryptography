@@ -1,0 +1,38 @@
+>> Version 1.0.0.0
+
+Diffie-Hellman uses module arithmatic combined with exponents to enable two remote parties to agree a secret.
+
+It works on the premis that stacking multiple exponents is the same this as multiplying the exponents.
+
+That is to say that 
+    
+    2 ^ 3 ^ 2    =     2 ^ (3 x 2)
+    2 ^ 3 ^ 2 = 64
+    2 ^ (3 x 2) = 64
+
+So 
+
+    3 ^ ($Key1 x  $Key2)     =     3 ^ ($Key2 x  $Key1)
+
+So the first step of the exchange is for each party to add an exponent
+
+    3 ^ ($Key1)         #person 1  
+    3 ^ ($Key2)         #person 2
+
+The users then swap and add their exponent to end up with 
+
+    3 ^ ($Key2 x $Key1)         #person 1  
+    3 ^ ($Key1 x $Key2)         #person 2
+
+The problem though is that while both parties will get the same output, the equasions are human readable.
+To get arround this problem we will make some small adjustments.
+
+We will start by picking two prime number _G snd _N. 
+_N must be bigger thamn _G.
+
+Now instead of exchanging the _G ^ ($Key1) we will preform _G ^ ($Key1) mod _N and return the output
+appebding the mod _N operation in this manner obsures the value of $Key1.
+
+so we end up with 
+
+    _G ^ (($Key1) mod _N) ^ ($Key2) mod _N)    =    _G ^ (($Key2) mod _N) ^ ($Key1) mod _N
